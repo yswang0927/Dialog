@@ -1,0 +1,1377 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+   
+    <title>Dialog弹窗</title>
+	
+    <link rel="stylesheet" type="text/css" href="css/jquery.snippet.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../dialog.css" />
+  </head>
+  
+  <body>
+	<div class="quick-nav">
+		<div class="quick-info">快速导航</div>
+		<ul>
+			<li><a href="#link0">使用步骤</a></li>
+			<li><a href="#link1">配置参数示例</a></li>
+			<li><a href="#link2">接口调用示例</a></li>
+			<li><a href="#link3">Alert等扩展示例</a></li>
+			<li><a href="#link4">API说明</a></li>
+			<li><a href="#link5">常见FAQ</a></li>
+		</ul>
+	</div>
+	
+	<div class="page-wrapper">
+		<h1>Dialog弹窗</h1>
+		
+		<a name="link0"></a>
+		<h2><span>使用步骤</span></h2>
+		<p><b>步骤1：在页面 &lt;head&gt;  &lt;/head&gt; 中或页面底部引入 fui.css, fui.js：</b> </p>
+<pre class="style_html">
+&lt;head&gt;  
+	...
+	&lt;link rel="stylesheet" type="text/css" href="{your_path}/fui/fui.css" /&gt;
+	&lt;script type="text/javascript" src="{your_path}/fui/fui.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+</pre>	
+<p><b>步骤2：在js代码中使用 Dialog.open(), Dialog.alert() 等接口</b></p>
+		
+		<style type="text/css">
+			.demo-area {
+				background-color:#fff; 
+				border:1px solid #e5e5e5; 
+				padding: 5px; 
+				margin-top: 10px; 
+				-webkit-border-radius: 5px; 
+				-moz-border-radius: 5px; 
+				border-radius: 5px;
+				color: #666;
+			}
+			.demo-area h3 { margin: 10px 0 5px 0; }
+			.demo-area h2 { margin:10px 0; padding:0; text-align:center; font-size: 20px;}
+			.demo-area dl { margin:0; padding:0; border-left: 1px dashed #e7e7e7; }
+			.demo-area dl dt { font-weight:bold; padding: 10px 0 5px 0; margin-left: 20px; }
+			.demo-area dl dd { padding: 0; margin:0 0 0 20px; }
+		</style>
+		
+		<a name="link1"></a>
+		<h2><span>配置参数示例</span></h2>
+		<div class="demo-area">
+			<ul>
+				<li>
+					<h3>id, title, width, height</h3>
+					<dl>
+						<dd>
+<pre id="code1" class="style_js">
+Dialog.open({
+	<b>id:</b> "diag1", 
+	<b>title:</b> "我是一个新窗口", 
+	<b>width:</b> 300, 
+	<b>height:</b> 150
+});
+</pre>
+							<button type="button" class="runCode" data-code="code1">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-url"></a>
+					<h3>url</h3>
+					<dl>
+						<dd>
+<pre id="code2" class="style_js">
+Dialog.open({
+	title: "打开URL", 
+	modal: false,
+	width: 500,  height: 'auto',
+	<b>url:</b> "dialog-inner.html",
+	button: [{label:'设置', focus:true}]
+});
+</pre>					
+						<button type="button" class="runCode" data-code="code2">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-content"></a>
+					<h3>content</h3>
+					<dl>
+						<dt>String -- 静态文本</dt>
+						<dd>
+<pre id="code3" class="style_js">
+Dialog.open({
+	title: "显示静态内容", 
+	width: 400, height: '200',
+	<b>content:</b> "&lt;link href='css/test.css' rel='stylesheet' type='text/css'/&gt;&lt;style type='text/css'&gt;.sc{padding:20px; font-size:16px; color:#ff0000;}&lt;/style&gt; &lt;a class='sc' href='javascript:_click();'&gt;O(∩_∩)O哈哈~，我是一段静态的文本内容。&lt;/a&gt; &lt;script type='text/javascript'&gt;function _click(){alert('9000');}&lt;/script&gt;"
+});
+</pre>					
+							<button type="button" class="runCode" data-code="code3">运行</button>
+						</dd>
+						<dt>HTMLElement -- 页面元素</dt>
+						<dd>如果传入的是 HTMLElement 类型，如果是隐藏元素会给其设置display:block以显示该元素，
+							其他属性与绑定的事件都会完整保留，对话框关闭后此元素又将恢复原来的display属性，
+							并且重新插入原文档所在位置
+						</dd>
+						<dd>
+							<div id="contentHtml" style="padding: 30px 0;">
+								<input type="text" name="" id="sinput" placeholder="请输入搜索内容" class="sinput"/> <button onclick="search();">搜索</button>
+								<script type="text/javascript">function search() {alert('请输入搜索内容!');}</script>
+							</div>
+<pre id="code4" class="style_js">
+Dialog.open({
+	title: "HTMLElement", 
+	width: 400, height: 'auto',
+	<b>content:</b> document.getElementById("contentHtml")
+});
+</pre>					
+							<button type="button" class="runCode" data-code="code4">运行</button>
+						</dd>
+						<dt>function -- 动态内容</dt>
+						<dd>使用函数输出内容，可以在后期动态更改内容，灵活性非常高。
+						<br/><b>典型用法：</b>先 <b>return</b> 等待提示信息，然后 <b>ajax</b> 异步获取新内容并调用函数内置方法 <b>updateContent</b> 进行更新。
+						</dd>
+						<dd>
+<pre id="code5" class="style_js">
+Dialog.open({
+	title: "看我的内容会变化", 
+	width: 400, height: 'auto',
+	<b>content:</b> function(updateContent) {
+		// 2.这里使用 setTimeout 模拟 ajax
+		window.setTimeout(function(){
+			// 3.调用参数方法 updateContent 进行更新
+			updateContent('&lt;style type="text/css"&gt;.sc{padding:20px; font-size:24px; color:#ff0000;}&lt;/style&gt;&lt;div class="sc"&gt;Look!! 我变了吧O(∩_∩)O~&lt;/div&gt;');
+			return;
+		}, 2000);
+		
+		// 1.先返回提示信息
+		return "数据将在2秒后更新...";
+	}
+});
+</pre>					
+							<button type="button" class="runCode" data-code="code5">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-leftop"></a>
+					<h3>left, top</h3>
+					<dl>
+						<dd>
+<pre id="code6" class="style_js">
+Dialog.open({
+	title: "看，我在右下角出来了", 
+	width: 300, height: 150,
+	<b>left:</b> "100%",
+	<b>top:</b> "100%"
+});
+</pre>					
+						<button type="button" class="runCode" data-code="code6">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-able"></a>
+					<h3>maxable, minable, resizable</h3>
+					<dl>
+						<dd>
+<pre id="code7" class="style_js">
+Dialog.open({
+	title: "我可以被最大化，最小化和拖动改变大小了", 
+	width: 400, height: 200,
+	<b>maxable:</b> true,
+	<b>minable:</b> true,
+	<b>resizable:</b> true
+});
+</pre>					
+						<button type="button" class="runCode" data-code="code7">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-modal"></a>
+					<h3>modal</h3>
+					<dl>
+						<dd>
+<pre id="code8" class="style_js">
+Dialog.open({
+	title: "我的身后没有遮罩层了，你看！", 
+	width: 400, height: 200,
+	<b>modal:</b> false
+});
+</pre>					
+						<button type="button" class="runCode" data-code="code8">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-follow"></a>
+					<h3>follow</h3>
+					<dl>
+						<dd>
+<pre id="code9" class="style_js">
+Dialog.open({
+	id:"followDiag", title: "我依附在 follow 对象的下面了", 
+	width: 400, height: 200, modal: false,
+	<b>follow:</b> document.getElementById("followBtn")
+});
+</pre>					
+						<button id="followBtn" type="button" class="runCode" data-code="code9">Follow Me</button>
+						</dd>
+						<dd>
+<pre id="code92" class="style_js">
+Dialog.open({
+	id:"followDiag2", title: "我依附在 follow 对象的右侧面了", 
+	width: 300, height: 200, modal: false,
+	<b>follow:</b> {'target': "followBtn2", 'placement': 'left'}
+});
+</pre>				
+						<button id="followBtn2" type="button" class="runCode" data-code="code92">Follow Me Right</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-fixed"></a>
+					<h3>fixed</h3>
+					<dl>
+						<dd>
+<pre id="code10" class="style_js">
+Dialog.open({
+	title: "我要跟随滚动条一起动动了！", 
+	width: 400, height: 200,
+	<b>fixed:</b> false
+});
+</pre>					
+						<button type="button" class="runCode" data-code="code10">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-button"></a>
+					<h3>button</h3>
+					<dl>
+						<dd>
+<pre id="code11" class="style_js">
+Dialog.open({
+	title: "自定义按钮", 
+	width: 400, height: 200,
+	<b>button:</b> [
+		{id:"mybtn1", label:"赞一个", callback:function(){alert('谢谢你的赞！');}},
+		{id:"mybtn2", label:"踩一下", callback:function(){alert('你踩了我一下，你等着~~~');}}
+	]
+});
+</pre>					
+						<button type="button" class="runCode" data-code="code11">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-theme"></a>
+					<h3>theme</h3>
+					<dl>
+						<dd>
+<pre id="code_theme" class="style_js">
+Dialog.open({
+	title: "", 
+	width: 595, height: 'auto',
+	theme: 'about',
+	content: function() {
+		var about = '&lt;style type="text/css"&gt;'+
+						'.about .idlg-header {height:auto !important;}'+
+						'.about .idlg-title {border:0px; height: 252px; padding:0; background:#fff url(images/liebao.png) no-repeat center center;}'+
+					'&lt;/style&gt;'+
+					'&lt;div style="text-align:center; padding:20px 0;"&gt;&lt;b&gt;隐私声明&lt;/b&gt;&emsp;&emsp;|&emsp;&emsp;&lt;b&gt;反馈问题&lt;/b&gt;&lt;div&gt;'+
+					'&lt;div style="text-align:center; padding:20px 0; color:#aaa;font-size:12px;"&gt;Copyright&copy;2011-2013 金山网络 All Rights Reserved.&lt;br/&gt;Designed by RIGO&lt;/div&gt;';
+		return about;
+	}
+});
+</pre>					
+						<button type="button" class="runCode" data-code="code_theme">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-clickMaskToClose"></a>
+					<h3>quickClose</h3>
+					<dl>
+						<dd>
+<pre id="code12" class="style_js">
+Dialog.open({
+	title: "点击遮罩层关闭我", 
+	width: 400, height: 200, closeable:false,
+	content: "你点击我身后的遮罩层同样可以关闭俺了！",
+	<b>quickClose:</b> true
+});
+</pre>					
+						<button type="button" class="runCode" data-code="code12">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-event"></a>
+					<h3>closeEvent, maximizeEvent, minimizeEvent</h3>
+					<dl>
+						<dd>
+<pre id="code13" class="style_js">
+Dialog.open({
+	id: "diag088888",
+	title: "重置内置事件行为", 
+	width: 400, height: 200, modal: false,
+	maxable: true,
+	minable: true,
+	<b>closeEvent:</b> function(){
+		alert('你无法关闭我了！但是你可以调用 this.close() 把我关闭。');
+		this.close(); // 手工调用 this.close() 关闭
+		return false;
+	},
+	<b>maximizeEvent:</b> function(){
+		alert('你无法把我最大化了！');
+		return false;
+	},
+	<b>minimizeEvent:</b> function(){
+		this.hide();
+		return false;
+	}
+});
+</pre>					
+						<button type="button" class="runCode" data-code="code13">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-onevent"></a>
+					<h3>onLoad, onShow, onClosed</h3>
+					<dl>
+						<dd>
+<pre id="code14" class="style_js">
+Dialog.open({
+	title: "监听事件行为", 
+	width: 400, height: 200,
+	url: "dialog-inner.html",
+	<b>onShow:</b> function(){
+		alert("我在窗口创建后执行。");
+	},
+	<b>onLoad:</b> function(){
+		alert("我在url页面加载完成后执行。");
+	},
+	<b>onClosed:</b> function(){
+		alert("我在窗口关闭后执行。");
+	}
+});
+</pre>					
+						<button type="button" class="runCode" data-code="code14">运行</button>
+						</dd>
+					</dl>
+				</li>
+        <li>
+          <a name="demo-ondrag_resize"></a>
+          <h3>onDrag, onResize</h3>
+          <dl>
+            <dd>
+<pre id="code142" class="style_js">
+Dialog.open({
+  title: "监听onDrag, onResize事件行为", 
+  width: 400, height: 200,
+  resizable: true,
+  content: "&lt;div style='font-size:20px;'>配置onDrag、onResize事件监听触发调用&lt;/div>",
+  <b>onDrag:</b> function(pos) {
+    document.getElementById('dr_log').innerHTML = '正在被拖动：left: '+ pos.left +', top: ' + pos.top;
+  },
+  <b>onResize:</b> function(dim) {
+    document.getElementById('dr_log').innerHTML = '正在被改变大小：left: '+ dim.left +', top: ' + dim.top + ', width: '+ dim.width +', height: '+ dim.height;
+  }
+});
+</pre>      <div id="dr_log" style="color:#ff0000;"></div>   
+            <button type="button" class="runCode" data-code="code142">运行</button>
+            </dd>
+          </dl>
+        </li>
+
+        <li>
+          <a name="demo-context"></a>
+          <h3>context</h3>
+          <dl>
+            <dd>
+<pre id="code14211" class="style_js">
+
+</pre>      <div id="dr_log" style="color:#ff0000;"></div>   
+            <button type="button" class="runCode" data-code="code14211">运行</button>
+            </dd>
+          </dl>
+        </li>
+
+        <li>
+          <a name="demo-container"></a>
+          <h3>container</h3>
+          <dl>
+            <dd>
+<pre id="code14212" class="style_js">
+Dialog.open({
+	title: "自定义 container", 
+	width: 300, height: 200,
+	left: 10, top: 10,
+	container: document.getElementById('my_container'),
+	content: "我将显示在自定义的 container 容器中",
+});
+</pre>     
+<pre class="style_html">
+&lt;div id="my_container" style="position:relative;"&gt;&lt;/div&gt;
+</pre> 
+ <div id="dr_log" style="color:#ff0000;"></div>   
+            <button type="button" class="runCode" data-code="code14212">运行</button>
+            </dd>
+          </dl>
+          <p>Dialog将在下面的div中显示</p>
+          <div id="my_container" style="position:relative; border:1px dashed #cc0000; min-height:300px;"></div>
+        </li>
+        
+			</ul>
+		</div>
+		
+		<a name="link2"></a>
+		<h2><span>接口调用示例</span></h2>
+		<div class="demo-area">
+			<h2>静态接口</h2>
+			<ul>
+				<li>
+					<a name="demo-dlgGet"></a>
+					<h3>Dialog.get(id)</h3>
+					<dl>
+						<dd>
+<pre id="code15" class="style_js">
+Dialog.open({
+	<b>id:</b> "diag2013",
+	title: "窗口id = diag2013", 
+	width: 300, height: 150
+});
+var diag = Dialog.get('diag2013');
+diag.content('I Love You!!');
+</pre>					
+						<button type="button" class="runCode" data-code="code15">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-dlgClose"></a>
+					<h3>Dialog.close(id)</h3>
+					<dl>
+						<dd>
+<pre id="code16" class="style_js">
+Dialog.open({
+	<b>id:</b> "diag201307",
+	title: "窗口id = diag201307", 
+	width: 300, height: 150,
+	content: '&lt;button onclick="Dialog.close(\'diag201307\');"&gt;关闭我&lt;/button&gt;'
+});
+</pre>					
+						<button type="button" class="runCode" data-code="code16">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-dlgOpenerWindow"></a>
+					<h3>Dialog.openerWindow()</h3>
+					<dl>
+						<dd>
+						<input type="text" id="textDemo" value="1234567890" style="width: 200x;"/>
+<pre id="code17" class="style_js">
+Dialog.open({
+	title: "窗口", 
+	width: 500,
+	modal: false,
+	url: 'dialog-inner.html'
+});
+</pre>
+<pre class="style_js">
+dialog-inner.html
+
+&lt;button onclick="getOpenerWindow();"&gt;获取来源页面中的内容&lt;/button&gt;
+function getOpenerWindow() {
+	var opWin = Dialog.openerWindow();
+	alert(opWin.document.getElementById('textDemo').value);
+}
+</pre>					
+						<button type="button" class="runCode" data-code="code17">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-dlgOpenerDialog"></a>
+					<h3>Dialog.openerDialog()</h3>
+					<dl>
+						<dd>
+<pre id="code18" class="style_js">
+Dialog.open({
+	title: "窗口", 
+	width: 500,
+	modal: false,
+	url: 'dialog-inner.html'
+});
+</pre>
+<pre class="style_js">
+dialog-inner.html
+</pre>					
+						<button type="button" class="runCode" data-code="code18">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-dlgOwnerDialog"></a>
+					<h3>Dialog.ownerDialog()</h3>
+					<dl>
+						<dd>
+<pre id="code19" class="style_js">
+Dialog.open({
+	title: "窗口", 
+	width: 500,
+	modal: false,
+	url: 'dialog-inner.html'
+});
+</pre>
+<pre class="style_js">
+dialog-inner.html
+
+&lt;button onclick="closeIt();"&gt;关闭所在窗口&lt;/button&gt;
+function closeIt() {
+	Dialog.ownerDialog().close();
+}
+</pre>					
+						<button type="button" class="runCode" data-code="code19">运行</button>
+						</dd>
+					</dl>
+				</li>
+			</ul>
+			
+			<h2>对象接口</h2>
+			<ul>
+				<li>
+					<a name="demo-objTitle"></a>
+					<h3>myDialog.title([val])</h3>
+					<dl>
+						<dd>
+<pre id="code20" class="style_js">
+var myDialog = Dialog.open({
+	title: "这是一个崭新的标题", 
+	width: 300, height: 150
+});
+// 获取窗口标题
+alert( myDialog.title() );
+// 修改窗口标题
+myDialog.title('&lt;font color="#cc0000">我把你改了...&lt;/font&gt;');
+</pre>					
+						<button type="button" class="runCode" data-code="code20">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-objContent"></a>
+					<h3>myDialog.content([val])</h3>
+					<dl>
+						<dd>
+<pre id="code21" class="style_js">
+var myDialog = Dialog.open({
+	title: "", 
+	width: 300, height: 150,
+	content: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+});
+// 获取窗口内容
+alert( myDialog.content() );
+// 修改窗口内容
+myDialog.content('&lt;font color="#cc0000">我把你改了...&lt;/font&gt;');
+</pre>					
+						<button type="button" class="runCode" data-code="code21">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-objSize"></a>
+					<h3>myDialog.size(width, height)</h3>
+					<dl>
+						<dd>
+<pre id="code22" class="style_js">
+var myDialog = Dialog.open({
+	title: "2秒后我将变大", 
+	width: 300, height: 150
+});
+
+window.setTimeout(function(){
+	myDialog.title('耶！我变大了');
+	myDialog.size(500, 400).position();
+}, 2000);
+</pre>					
+						<button type="button" class="runCode" data-code="code22">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-objPosition"></a>
+					<h3>myDialog.position(left, top)</h3>
+					<dl>
+						<dd>
+<pre id="code23" class="style_js">
+var myDialog = Dialog.open({
+	title: "2秒后我将移动到左上角", 
+	width: 300, height: 150
+});
+
+window.setTimeout(function(){
+	myDialog.position(0, 0);
+}, 2000);
+</pre>					
+						<button type="button" class="runCode" data-code="code23">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-objFollow"></a>
+					<h3>myDialog.follow(element)</h3>
+					<dl>
+						<dd>
+<pre id="code230" class="style_js">
+var myDialog = Dialog.open({
+	title: "跟随运行按钮", 
+	width: 300, height: 150
+});
+myDialog.follow( document.getElementById('demoFBtn') );
+</pre>					
+						<button type="button" id="demoFBtn" class="runCode" data-code="code230">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-objShowHide"></a>
+					<h3>myDialog.show()，myDialog.hide()</h3>
+					<dl>
+						<dd>
+<pre id="code24" class="style_js">
+var myDialog = Dialog.open({
+	title: "神秘下，2秒后显示...", 
+	width: 300, height: 150
+});
+myDialog.hide();
+
+window.setTimeout(function(){
+	myDialog.show();
+}, 2000);
+</pre>					
+						<button type="button" class="runCode" data-code="code24">运行</button>
+						</dd>
+					</dl>
+				</li>
+		
+				<li>
+					<a name="demo-objClose"></a>
+					<h3>myDialog.close()</h3>
+					<dl>
+						<dd>
+<pre id="code26" class="style_js">
+var myDialog = Dialog.open({
+	title: "2秒后闪人~~~", 
+	width: 300, height: 150
+});
+window.setTimeout(function(){
+	myDialog.close();
+}, 2000);
+</pre>					
+						<button type="button" class="runCode" data-code="code26">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-objMaxMin"></a>
+					<h3>myDialog.maximize()，myDialog.minimize()</h3>
+					<dl>
+						<dd>
+<pre id="code27" class="style_js">
+var myDialog = Dialog.open({
+	title: "2秒后最大化，然后最小化~~~", 
+	width: 300, height: 150,
+	maxable: true, minable: true
+});
+window.setTimeout(function(){
+	myDialog.maximize();
+	
+	setTimeout(function(){
+		myDialog.minimize();
+	}, 1000);
+}, 2000);
+</pre>					
+						<button type="button" class="runCode" data-code="code27">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-rootEle"></a>
+					<h3>myDialog.htmlElement</h3>
+					<dl>
+						<dd>
+<pre id="code8988" class="style_js">
+var myDialog = Dialog.open({
+	title: "新建目录", 
+	content: '&lt;div style="padding:10px;"&gt;目录名称：&lt;br/&gt;&lt;input type="text" style="padding: 4px 1%; width:96%;"/&gt;&lt;/div&gt;',
+	width: 350, 
+	height: 150,
+	dragable: false,
+	onShow: function(){
+		var ele = this.htmlElement;
+		ele.style.top = '-150px';
+		$(ele).animate({'top':0}, 300);
+	},
+	closeEvent: function(){
+		var ele = this.htmlElement, _this = this;
+		$(ele).animate({'top':-150}, 250, function(){
+			_this.close();
+		});
+		return false; // 返回false用于取消默认动作行为
+	}
+});
+</pre>					
+						<button type="button" class="runCode" data-code="code8988">运行</button>
+						</dd>
+					</dl>
+				</li>
+			</ul>
+		</div>
+		
+		<a name="link3"></a>
+		<h2><span>Alert, Confirm等扩展示例</span></h2>
+		<div class="demo-area">
+			<ul>
+				<li>
+					<a name="demo-alert"></a>
+					<h3>Dialog.alert(msg, [yesfunc], [{opts}])</h3>
+					<dl>
+						<dd>
+<pre id="code28" class="style_js">
+Dialog.alert( "&lt;h3&gt;谢谢你让我出来透透气!&lt;/h3&gt;你不再爱我了吗？？你不再爱我了吗？？你不再爱我了吗？？", 
+	function(){
+		alert('嘿嘿！');
+	}, 
+	{ title:'好友打招呼', yesLabel: '不客气' }
+);
+</pre>					
+						<button type="button" class="runCode" data-code="code28">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-confirm"></a>
+					<h3>Dialog.confirm(msg, [yesfunc], [nofunc], [{opts}])</h3>
+					<dl>
+						<dd>
+<pre id="code29" class="style_js">
+Dialog.confirm( '&lt;b&gt;您可以选择 [移进回收站] 或 [彻底删除]&lt;/b&gt;：&lt;br/&gt;[彻底删除] -- 文件将无法恢复；&lt;br/&gt;[移进回收站] -- 文件将能够被还原。', 
+	function(){
+		Dialog.alert('成功放入回收站！', null, {type:'success'});
+	}, 
+	function() {
+		Dialog.alert('系统文件无法被删除！', null, {title:"删除失败", type:'error'});
+	},
+	{ title:'确定要删除该文件吗？', 
+		yesLabel: '移进回收站', 
+		noLabel: '彻底删除', 
+		button: [ {label:'取消'} ],
+		follow: document.getElementById('confirmBtn') 
+	}
+);
+</pre>					
+						<button type="button" id="confirmBtn" class="runCode" data-code="code29">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-alert-success"></a>
+					<h3>Dialog.success(msg, [yesfunc], [{opts}])</h3>
+					<dl>
+						<dd>
+<pre id="code28-1" class="style_js">
+Dialog.success("操作成功！");
+</pre>					
+						<button type="button" class="runCode" data-code="code28-1">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-alert-warning"></a>
+					<h3>Dialog.warning(msg, [yesfunc], [{opts}])</h3>
+					<dl>
+						<dd>
+<pre id="code28-2" class="style_js">
+Dialog.warning("越权操作，请联系管理员！");
+</pre>					
+						<button type="button" class="runCode" data-code="code28-2">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<li>
+					<a name="demo-alert-error"></a>
+					<h3>Dialog.error(msg, [yesfunc], [{opts}])</h3>
+					<dl>
+						<dd>
+<pre id="code28-3" class="style_js">
+Dialog.error("系统升级失败，升级服务器不可用！");
+</pre>					
+						<button type="button" class="runCode" data-code="code28-3">运行</button>
+						</dd>
+					</dl>
+				</li>
+				<!--
+				<li>
+					<a name="demo-toast"></a>
+					<h3>Dialog.toast(msg, [{opts}])</h3>
+					<dl>
+						<dd>
+<pre id="code30" class="style_js">
+Hint.show( "数据请求中...", {type: "loading", delay: 2000} );
+</pre>					
+						<button type="button" class="runCode" data-code="code30">运行</button>
+						</dd>
+					</dl>
+				</li> -->
+	
+			</ul>
+		</div>
+
+		<a name="link4"></a>
+		<h2><span>API说明</span></h2>
+
+		<table border="0" cellspacing="0" cellpadding="0" class="api-table">
+		  <tr>
+			<th>配置参数<br/> 
+				Dialog.open({param:value, ...});
+			</th>
+			<th>参数值</th>
+			<th>描述</th>
+		  </tr>
+		  <tr class="even">
+			<td><code>id</code></td>
+			<td>自定义</td>
+			<td>窗口唯一标识</td>
+		  </tr>
+		  <tr>
+			<td><code>title</code></td>
+			<td>自定义 | false</td>
+			<td>窗口标题，如果为 false，则隐藏标题栏</td>
+		  </tr>
+		  <tr>
+			<td><code>url</code></td>
+			<td>url地址</td>
+			<td>窗口中打开的页面地址
+				<br/><b>注意：</b>和下面的 <code>content</code> 属性只能2选1.
+				<br/><a href="#demo-url">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>content</code></td>
+			<td>String, HTMLElement, function</td>
+			<td>窗口中打开的静态内容 或 页面中的一个元素内容 或执行一个函数。
+				<br/><b>注意：</b>和上面的 <code>url</code> 属性只能2选1.
+				<br/><a href="#demo-content">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>width</code></td>
+			<td>数值</td>
+			<td>窗口宽度</td>
+		  </tr>
+		  <tr>
+			<td><code>height</code></td>
+			<td>数值 | auto</td>
+			<td>窗口高度，如果为 auto 则自适应内容高度。</td>
+		  </tr>
+		  <tr>
+			<td><code>left</code></td>
+			<td>%，px</td>
+			<td>指定窗口显示位置离浏览器左侧距离，默认居中。
+				<br/><a href="#demo-lefttop">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>top</code></td>
+			<td>%，px</td>
+			<td>指定窗口显示位置离浏览器上侧距离，默认居中。
+				<br/><a href="#demo-lefttop">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>theme</code></td>
+			<td>自定义主题样式</td>
+			<td>自定义窗口样式class类。
+				<br/><a href="#demo-theme">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>closeable</code></td>
+			<td>true|false， 默认 true</td>
+			<td>是否显示窗口右上角的关闭按钮图标。
+				<br/><a href="#demo-able">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>maxable</code></td>
+			<td>true|false， 默认 false</td>
+			<td>是否显示窗口右上角的最大化按钮图标。
+				<br/><a href="#demo-able">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>minable</code></td>
+			<td>true|false， 默认 false</td>
+			<td>是否显示窗口右上角的最小化按钮图标。
+				<br/><a href="#demo-able">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>resizable</code></td>
+			<td>true|false， 默认 false</td>
+			<td>是否允许窗口在8个方向的缩放。
+				<br/><a href="#demo-able">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>dragable</code></td>
+			<td>true|false， 默认 true</td>
+			<td>是否允许窗口可拖动。</td>
+		  </tr>
+		  <tr>
+			<td><code>fixed</code></td>
+			<td>true|false， 默认 true</td>
+			<td>是否允许窗口静止定位。
+				<br/><a href="#demo-fixed">示例</a>
+			</td>
+		  </tr><tr>
+			<td><code>modal</code></td>
+			<td>true|false， 默认 true</td>
+			<td>打开窗口时，是否显示遮罩层。
+				<br/><a href="#demo-modal">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>follow</code></td>
+			<td>element_id, <br/> HTMLElement, <br/>
+				{ target': 'string, HTMLElement',  placement: 'top|bottom|left|right' } 默认 bottom
+			</td>
+			<td>指定打开的窗口位置在给定元素的周围，默认：下方。 <br/>
+				Dialog.open({ follow: 'eleid' }) <br/>
+				Dialog.open({ follow: document.getElementById('eleid') }) <br/>
+				Dialog.open({ follow: { target: 'eleid', placement: 'right'} })<br/>
+				Dialog.open({ follow: { target: document.getElementById('eleid'), placement: 'right'} })<br/>
+				<a href="#demo-follow">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>button</code></td>
+			<td>数组<br/>
+				[ <br/>{id:"", label:"", focus:true|false, callback:function(){} }, <br/> ...<br/>]
+			</td>
+			<td>在窗口底部增加自定义按钮。
+				<br/><a href="#demo-button">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>quickClose</code></td>
+			<td>true|false，默认 false</td>
+			<td>是否开启点击遮罩层关闭当前活动窗口。
+				<br/><a href="#demo-clickMaskToClose">示例</a>
+			</td>
+		  </tr>
+		  <!--
+		  <tr>
+			<td><code>delay</code></td>
+			<td>数值，单位：毫秒</td>
+			<td>窗口自动关闭延迟时间。</td>
+		  </tr> -->
+		  <tr>
+			<td><code>context</code></td>
+			<td>window对象，默认 顶层window对象</td>
+			<td>窗口显示的上下文环境；
+				<br/>如果为 <b>self</b>，则窗口在当前页面上创建；否则窗口将在最外层页面上创建。
+			</td>
+		  </tr>
+		  <!--
+		  <tr>
+			<td><code>zindex</code></td>
+			<td>数值</td>
+			<td>指定窗口默认的显示层级，即：css的z-index属性。</td>
+		  </tr> -->
+		  <tr>
+			<td><code>closeEvent</code></td>
+			<td>function</td>
+			<td>窗口关闭事件重置；
+				<br/><b>注意：</b>函数的 <b>this</b> 对象为当前Dialog对象。
+				<br/><a href="#demo-event">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>maximizeEvent</code></td>
+			<td>function</td>
+			<td>窗口最大化事件重置
+				<br/><a href="#demo-event">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>minimizeEvent</code></td>
+			<td>function</td>
+			<td>窗口最小化事件重置
+				<br/><a href="#demo-event">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>onShow</code></td>
+			<td>function</td>
+			<td>当窗口显示后要执行的回调函数
+				<br/><b>注意：</b>和onLoad的区分，函数的上下文 <b>this</b> 对象为当前Dialog对象。
+				<br/><a href="#demo-onevent">示例</a>
+			</td>
+		  </tr>
+		   <tr>
+			<td><code>onLoad</code></td>
+			<td>function</td>
+			<td>对话框加载url完成后的回调函数。
+				<br/><b>注：</b>函数的上下文 <b>this</b> 对象为当前Dialog对象。
+				<br/><a href="#demo-onevent">示例</a>
+			</td>
+		  </tr>
+      
+       <tr>
+      <td><code>onClosed</code></td>
+      <td>function</td>
+      <td>窗口关闭后执行的事件。
+        <br/><b>注：</b>函数的上下文 <b>this</b> 对象为当前Dialog对象。
+        <br/><a href="#demo-onevent">示例</a>
+      </td>
+      </tr>
+      
+		  <tr>
+			<td><code>onDrag</code></td>
+			<td>function({'left':left, 'top':top})</td>
+			<td>窗口被移动过程中执行的回调函数。
+				<br/><b>注：</b>函数的上下文 <b>this</b> 对象为当前Dialog对象。
+				<br/><a href="#demo-ondrag_resize">示例</a>
+			</td>
+		  </tr>
+      <tr>
+      <td><code>onResize</code></td>
+      <td>function({'width':w, 'height':h, 'left':left, 'top':top})</td>
+      <td>窗口被拖动改变大小过程中执行的回调函数。
+        <br/><b>注：</b>函数的上下文 <b>this</b> 对象为当前Dialog对象。
+        <br/><a href="#demo-ondrag_resize">示例</a>
+      </td>
+      </tr>
+		  
+		  <tr>
+			<th colspan="3" align="left">静态接口调用</th>
+		  </tr>
+		 <tr>
+			<td><code>Dialog.open({opts})</code></td>
+			<td><b>{opts}</b> -- 属性配置，参考上面的属性参数</td>
+			<td>打开一个Dialog窗口：
+				<br/><b>Dialog.open</b>({ title:"新窗口", width:"500", height:"600", url:"index.html", ... });
+				<br/><a href="#demo-url">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>Dialog.alert(msg, [yesfunc], [{opts}])</code></td>
+			<td>
+				<b>msg</b> -- 提示内容 <br/>
+				<b>[yesfunc]</b> -- [可选] 点击确定后执行的函数 <br/>
+				<b>[{opts}]</b> -- [可选] 属性配置，支持的属性为：
+				<br/><b>title</b> -- 窗口标题
+				<br/><b>yesLabel</b> -- 自定义确定按钮的名称
+				<br/><b>width, height</b> -- 自定义窗口宽度和高度，默认自适应
+				<br/><b>button</b> -- 自定义按钮，同上面的button说明
+				<br/><b>type</b> -- 提示框中的图标类型，提供：info, warning, success, error 四种类型，默认: info.
+			</td>
+			<td>
+				打开一个模拟浏览器的alert提示框：
+				<br/> <b>Dialog.alert</b>(<br/>"当前Dialog版本是4.0", 
+											<br/>function() { alert('你点击了确定按钮') }, 
+											<br/>{ title:"版本提示", yesLabel:"知道了" }
+									<br/>);
+				<br/><a href="#demo-alert">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>Dialog.confirm(msg, [yesfunc], <br/>[nofunc], [{opts}])</code></td>
+			<td>
+				<b>msg</b> -- 提示内容 <br/>
+				<b>[yesfunc]</b> -- [可选] 点击确定后执行的函数 <br/>
+				<b>[nofunc]</b> -- [可选] 点击取消后执行的函数 <br/>
+				<b>[{opts}]</b> -- [可选] 属性配置，支持的属性为：
+				<br/><b>title</b> -- 窗口标题
+				<br/><b>yesLabel</b> -- 自定义确定按钮的名称
+				<br/><b>noLabel</b> -- 自定义取消按钮的名称
+				<br/><b>width, height</b> -- 窗口宽度和高度自定义
+				<br/><b>button</b> -- 自定义按钮，同上面的button说明
+				<br/><b>type</b> -- 提示框中的图标类型，提供：info, warning, success, error 四种类型，默认: warning.
+			</td>
+			<td>
+				打开一个模拟浏览器的confirm询问框：
+				<br/> <b>Dialog.confirm</b>(<br/>"确定要退出系统吗？", 
+											<br/>function() { alert('你点击了确定按钮') }, 
+											<br/>function() { alert('你点击了取消按钮') }, 
+											<br/>{ title:"版本提示", yesLabel:"退出", noLabel:"取消" }
+									<br/>);
+				<br/><a href="#demo-confirm">示例</a>
+			</td>
+		  </tr>
+		   <tr>
+			<td><code>Dialog.success(msg, [yesfunc], [{opts}])</code></td>
+			<td>
+				同 Dialog.alert()
+			</td>
+			<td>
+				打开一个成功提示框<br/>是 Dialog.alert('', func, { type:'success' }); type = success 的快速方式。
+				<br/><a href="#demo-alert-success">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>Dialog.warning(msg, [yesfunc], [{opts}])</code></td>
+			<td>同 Dialog.alert() </td>
+			<td>
+				打开一个警告提示框<br/>是 Dialog.alert('', func, { type:'warning' }); type = warning 的快速方式。
+				<br/><a href="#demo-alert-warning">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>Dialog.error(msg, [yesfunc], [{opts}])</code></td>
+			<td>同 Dialog.alert() </td>
+			<td>
+				打开一个错误提示框<br/>是 Dialog.alert('', func, { type:'error' }); type = error 的快速方式。
+				<br/><a href="#demo-alert-error">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>Dialog.toast(msg, [{opts}])</code></td>
+			<td>
+				<b>msg</b> -- 通知内容 <br/>
+				<b>[{opts}]</b> -- [可选] 属性配置，支持的属性为：
+				<br/><b>delay</b> -- 自动关闭延迟时间，单位：毫秒
+				<br/><b>type</b> -- 通知中显示的图标类型，默认 info;
+				<br/>值为：info, loadding, success, warning, error；
+			</td>
+			<td>
+				打开一个通知提醒框：
+				<br/> <b>Dialog.toast</b>("正在加载数据...", {type:'loadding'});
+				<br/><a href="#demo-toast">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>Dialog.get(id)</code></td>
+			<td>窗口id</td>
+			<td>根据给定的窗口id获取对应窗口对象。
+				<br/><a href="#demo-dlgGet">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>Dialog.openerWindow()</code></td>
+			<td></td>
+			<td>获取Dialog窗口来源页面的window对象，该方法用于窗口和来源页面进行交互操作。
+				<br/><a href="#demo-dlgOpenerWindow">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>Dialog.openerDialog()</code></td>
+			<td></td>
+			<td>获取子Dialog窗口来源父Dialog窗口对象，该方法用于子窗口和和父窗口进行交互操作。
+				<br/><a href="#demo-dlgOpenerDialog">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>Dialog.ownerDialog()</code></td>
+			<td></td>
+			<td>在Dialog窗口内部页面中获取所在的当前窗口对象，该方法用于在窗口内部页面上关闭当前窗口：
+				<br/><b>Dialog.ownerDialog().close();</b>
+				<br/><a href="#demo-dlgOwnerDialog">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td><code>Dialog.close(id,[window])</code></td>
+			<td>窗口id</td>
+			<td>关闭给定窗口id的窗口。
+				<br/><a href="#demo-dlgClose">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<th colspan="3" align="left">对象接口调用：var myDialog = Dialog.open({opts});</th>
+		  </tr>
+		  <tr>
+			<td>myDialog.<code>title([val])</code></td>
+			<td>标题内容，可选</td>
+			<td>获取或设置窗口标题。
+				<br/><a href="#demo-objTitle">示例</a>
+			</td>
+		  </tr>
+		   <tr>
+			<td>myDialog.<code>url([_url])</code></td>
+			<td>新url地址，可选</td>
+			<td>获取窗口加载的当前url地址 或 重新加载给定的url。</td>
+		  </tr>
+		  <tr>
+			<td>myDialog.<code>content([val])</code></td>
+			<td>静态内容(String, HTMLElement, function)，可选</td>
+			<td>获取或设置窗口内容。
+				<br/><a href="#demo-objContent">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td>myDialog.<code>size(width, height)</code></td>
+			<td>width -- 窗口宽度，数值
+				<br/>height -- 窗口高度，数值
+			</td>
+			<td>设置窗口的宽度和高度。
+				<br/><a href="#demo-objSize">示例</a>
+			</td>
+		  </tr>
+		
+		  <tr>
+			<td>myDialog.<code>position([left, top])</code></td>
+			<td>left -- 窗口距离浏览器左侧距离，百分数或数值
+				<br/>top -- 窗口距离浏览器上侧距离，百分数或数值
+			</td>
+			<td>手工设置窗口在页面中的显示位置。
+				<br/><a href="#demo-objPosition">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td>myDialog.<code>follow(element, [placement])</code></td>
+			<td>element -- 跟随的页面元素原生DOM对象。<br/>
+				placement -- 显示位置：top | bottom | left | right；默认 bottom
+			</td>
+			<td>手工设置窗口跟随某个页面元素
+				<br/><a href="#demo-objFollow">示例</a>
+			</td>
+		  </tr>
+		  
+		  <tr>
+			<td>myDialog.<code>show()</code></td>
+			<td></td>
+			<td>即时显示被隐藏的窗口，和 <code>.hide()</code> 配合使用。
+				<br/><a href="#demo-objShowHide">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td>myDialog.<code>hide()</code></td>
+			<td></td>
+			<td>即时隐藏窗口，和 <code>.show()</code> 配合使用。</td>
+		  </tr>
+		  <tr>
+			<td>myDialog.<code>close()</code></td>
+			<td></td>
+			<td>关闭当前窗口。
+				<br/><a href="#demo-objClose">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td>myDialog.<code>maximize()</code></td>
+			<td></td>
+			<td>最大化当前窗口。
+				<br/><a href="#demo-objMaxMin">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<td>myDialog.<code>minimize()</code></td>
+			<td></td>
+			<td>最小化当前窗口。
+				<br/><a href="#demo-objMaxMin">示例</a>
+			</td>
+		  </tr>
+		  <tr>
+			<th colspan="3" align="left">对象属性调用：</th>
+		  </tr>
+		  <tr>
+			<td>myDialog.<code>context</code></td>
+			<td></td>
+			<td>引用窗口所在的上下文window对象</td>
+		  </tr>
+		  <tr>
+			<td>myDialog.<code>openerWindow</code></td>
+			<td></td>
+			<td>引用窗口来源的页面window对象</td>
+		  </tr>
+		  <tr>
+			<td>myDialog.<code>openerDialog</code></td>
+			<td></td>
+			<td>引用窗口来源的Dialog对象</td>
+		  </tr>
+		  <tr>
+			<td>myDialog.<code>innerWindow</code></td>
+			<td></td>
+			<td>引用窗口中iframe子页面的window对象。
+				<b style="color:#ff0000;">注意：</b>该引用仅在窗口加载url并且非跨域模式下有效。
+			</td>
+		  </tr>
+		  <tr>
+			<td>myDialog.<code>innerDocument</code></td>
+			<td></td>
+			<td>引用窗口中iframe子页面的document对象。
+				<b style="color:#ff0000;">注意：</b>该引用仅在窗口加载url并且非跨域模式下有效。
+			</td>
+		  </tr>
+		  <tr>
+			<td>myDialog.<code>htmlElement</code></td>
+			<td></td>
+			<td>引用窗口的DOM结构根对象<br/><a href="#demo-rootEle">示例</a>
+			</td>
+		  </tr>
+		  
+		</table>
+		
+	</div>
+
+	<script type="text/javascript" src="js/jquery.js"></script>
+	<script type="text/javascript" src="js/jquery.snippet.min.js"></script>
+	<script type="text/javascript" src="../dialog.js?theme=google"></script>
+	<script type="text/javascript">
+		function runCode(codeEle) {
+			var getText = function(elems) {
+				var ret = "", elem;
+				for ( var i = 0; elems[i]; i++ ) {
+					elem = elems[i];
+					// 去除注释行
+					if(elem.nodeType == 1 && elem.className.indexOf('comment') != -1) {
+						continue;
+					}
+					if ( elem.nodeType === 3 || elem.nodeType === 4 ) {
+						ret += elem.nodeValue;
+					} else if ( elem.nodeType !== 8 ) {
+						ret += getText( elem.childNodes );
+					};
+				};
+				return ret;
+			};
+			
+			var codeEle = document.getElementById(codeEle);
+			if(!codeEle) {
+				alert("未发现有效的代码内容体!");
+			}
+			
+			var code = getText(codeEle.childNodes);
+			 try {
+				new Function(code).call(window);
+			} catch (e) {
+				window.console && console.error(e);
+			};
+			return this;
+		};
+		
+		$(function(){
+			
+			$("pre.style_html").snippet("html", {style:"rand01", showNum:false});
+			$("pre.style_js").snippet("javascript", {style:"rand01", showNum:false});
+			
+			$(document).bind("click", function(evt){
+				var $runBtn = $(evt.srcElement || evt.target);
+				if($runBtn.hasClass('runCode')) {
+					runCode($runBtn.attr('data-code'));
+				}
+			});
+			
+			//Dialog.open({width: 500, height: 400, title:"test", follow: {'target': "followBtn2", 'placement': 'right'}});
+		});
+	</script>
+  </body>
+</html>

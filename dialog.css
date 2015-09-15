@@ -1,0 +1,338 @@
+/**
+ * Dialog4.0 CSS
+ * @author yswang
+ */
+body {_margin:0; _width:100%; _height:100%;}/*IE6 BUG*/ 
+
+.fui-dialog {}
+
+/* 框架外壳 */
+.idlg-outer { 
+	position: relative; 
+	border: 0; 
+	padding: 0; 
+	margin: 0; 
+	outline: none 0;
+}
+.idlg-outer { 
+	background-color: #fff;
+	border: 1px solid #efefef;
+	border: 1px solid #ccc\9;
+  box-shadow: 0 1px 16px rgba(0, 0, 0, .4);
+	outline: 0;
+	background-clip: padding-box;
+	opacity: 0;
+	-webkit-transform: scale(0);
+	-moz-transform: scale(0);
+	transform: scale(0);
+	-webkit-transition: -webkit-transform .15s ease-in-out, opacity .15s ease-in-out;
+	-moz-transition: -moz-transform .15s ease-in-out, opacity .15s ease-in-out;
+	transition: transform .15s ease-in-out, opacity .15s ease-in-out;
+}
+
+/* 窗口5种状态(显示idlg-show、聚焦idlg-focus、不活跃idlg-blur、
+	最大化idlg-maximized、最小化idlg-minimized)下的样式定义 */
+.idlg-show .idlg-outer {
+  opacity: 1;
+  -webkit-transform: scale(1);
+  -moz-transform: scale(1);
+  transform: scale(1);
+}
+.idlg-focus .idlg-outer {
+  border: 1px solid #efefef;
+	border: 1px solid #ccc\9;
+  box-shadow: 0 1px 16px rgba(0, 0, 0, .5);
+}
+.idlg-blur .idlg-outer {
+  border: 1px solid #f2f2f2;
+  border: 1px solid #cdcdcd\9;
+  box-shadow: 0 1px 16px rgba(0, 0, 0, .3);
+}
+.idlg-blur .idlg-title {
+	color:#888;
+}
+.idlg-maximized {}
+.idlg-minimized {}
+
+/* 头部 */
+.idlg-header { 
+	position: relative; 
+	height: 48px;
+	line-height: 48px;
+	background-color: #fafafa;
+	border-bottom: 1px solid #e2e2e2;
+	overflow: hidden;
+}
+/* 标题 */
+.idlg-title { 
+	padding: 0 12px; 
+	padding-right: 90px;
+	margin: 0 0;
+	color: #333;
+	font-size: 16px; 
+	font-weight: bold; 
+	overflow: hidden; 
+	text-overflow: ellipsis; 
+	cursor: default; 
+}
+/* 主体内容 */
+.idlg-main {
+	display: block;
+	margin: 0; 
+	padding: 0; 
+	border: 0 none !important; 
+	text-align: left;
+	overflow: auto;
+}
+.idlg-iframe {
+	display: block;
+	margin: 0;
+	vertical-align: top;
+}
+/* 底部按钮区 */
+.idlg-footer { 
+	display: none; 
+}
+/* 底部按钮容器 */
+.idlg-buttons { 
+	padding: 10px 12px; 
+	text-align: right; 
+	white-space: nowrap; 
+}
+/* 按钮样式 */
+.idlg-btn { 
+	display: inline-block; 
+	margin-left: 12px; 
+	padding:0 10px; 
+	max-width: 300px; 
+	width: auto; 
+	_width: 1;	
+	height: 30px; 
+	line-height: 29px; 
+	text-align: center; 
+	text-decoration: none; 
+	font-size: 14px; 
+	color: #167EFB;
+	outline: none; 
+	cursor: pointer; 
+	*display: inline; 
+	*zoom: 1; 
+	*overflow: visible; 
+	*filter:chroma(color=#000000);
+}
+
+.idlg-btn.state-focus {
+	background-color: #2b91e3;
+	color: #fff;
+	-webkit-border-radius: 3px;
+	   -moz-border-radius: 3px;
+			border-radius: 3px;
+}
+
+/* 遮罩层样式 */
+.idlg-mask {
+	position: fixed;
+	width:100%; height:100%;
+	left:0; top:0; right:0; bottom:0;
+	margin: 0; padding: 0;
+	background-color: #000; 
+	opacity: .6; 
+	filter: alpha(opacity=60); 
+	background: rgba(0, 0, 0, 0.6); 
+	display: none;
+	overflow: hidden;
+}
+
+/* 箭头样式 */
+.idlg-arrow {
+	position: absolute;
+	z-index: 10;
+	width: 10px;
+	height: 10px;
+	display: none;
+}
+.idlg-arrow .arrow-out, .idlg-arrow .arrow-in {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 0 !important;
+	height: 0 !important;
+	overflow: hidden;
+	border-style: solid;
+	border-color: rgba(0,0,0,0);
+	border-color: transparent\9;
+	border-width: 10px;
+	z-index:1;
+}
+.idlg-arrow .arrow-in  {
+	z-index:2;
+}
+/* 箭头方向 */
+/* 箭头在左边 */
+.idlg-arrow.at-lft {
+	left: -10px;
+}
+.idlg-arrow.at-lft .arrow-out {
+	top: -5px;
+	border-right-color: #bcbcbc;
+	border-left-width: 0;
+}
+.idlg-arrow.at-lft .arrow-in {
+	top: -5px;
+	left: 1px;
+	border-right-color: #fff;
+	border-left-width: 0;
+}
+/* 箭头在上边 */
+.idlg-arrow.at-top {
+	top: -10px;
+}
+.idlg-arrow.at-top .arrow-out {
+	left: -5px;
+	border-bottom-color: #bcbcbc;
+	border-top-width: 0;
+}
+.idlg-arrow.at-top .arrow-in {
+	left: -5px;
+	top: 1px;
+	border-bottom-color: #fff;
+	border-top-width: 0;
+}
+/* 箭头在右边 */
+.idlg-arrow.at-rgt {
+	right: -10px;
+}
+.idlg-arrow.at-rgt .arrow-out {
+	top: -5px;
+	border-left-color: #bcbcbc;
+	border-right-width: 0;
+}
+.idlg-arrow.at-rgt .arrow-in {
+	top: -5px;
+	left: -1px;
+	border-left-color: #fff;
+	border-right-width: 0;
+}
+/* 箭头在下边 */
+.idlg-arrow.at-btm {
+	bottom: -10px;
+}
+.idlg-arrow.at-btm .arrow-out {
+	left: -5px;
+	border-top-color: #bcbcbc;
+	border-bottom-width: 0;
+}
+.idlg-arrow.at-btm .arrow-in {
+	left: -5px;
+	top: -1px;
+	border-top-color: #fff;
+	border-bottom-width: 0;
+}
+
+/* 头部工具栏按钮：关闭、最小化、最大化、最大化还原 */
+.idlg-close, .idlg-min, .idlg-max, .idlg-restore { 
+	display:block;
+	position: absolute; 
+	top: 16px;  
+	z-index: 10; 
+	width: 16px; 
+	height: 16px; 
+	background-image:url("dialog_sprites.png"); 
+	background-repeat:no-repeat; 
+	text-indent: -999em; 
+	text-decoration:none !important; 
+	outline: none 0; 
+	overflow: hidden;  
+	cursor: pointer;
+}
+.idlg-close {
+  right: 12px;
+  background-position: 0 0;
+}
+.idlg-close:hover {
+  background-position: 0 -16px;
+}
+.idlg-close-dis {
+  display:none;
+}
+.idlg-min {
+  right: 70px;
+  background-position: -19px 0;
+}
+.idlg-min:hover {
+  background-position: -19px -16px;
+}
+.idlg-max {
+  right: 42px;
+  background-position: -38px 0;
+}
+.idlg-max:hover {
+  background-position: -38px -16px;
+}
+.idlg-restore {
+  right: 42px;
+  background-position: -57px 0;
+}
+.idlg-restore:hover {
+  background-position: -57px -16px;
+}
+
+/* 扩展的Alert */
+.idlg-alert .idlg-main{ 
+	min-width: 300px; 
+	max-width: 500px;
+	min-height: 60px;
+}
+.idlg-alert .idlg-header,
+.idlg-alert .idlg-title { 
+	height: auto; 
+	line-height: 1; 
+	border: 0; 
+	background:none; 
+	background-color: transparent; 
+}
+.idlg-alert .idlg-title { 
+	padding: 10px 0 5px 12px; 
+	font-size: 15px; 
+}
+.idlg-alert .alert-icon { 
+	display: inline-block; 
+	width: 30px; 
+	height: 30px; 
+	margin-right: 8px; 
+	background: url(dialog_alert_icons.png) no-repeat 0 0; 
+	vertical-align: middle; 
+}
+.idlg-alert .icon-info { 
+	background-position: 0 0;
+}
+.idlg-alert .icon-warning { 
+	background-position: -32px 0; 
+}
+.idlg-alert .icon-success { 
+	background-position: -64px 0; 
+}
+.idlg-alert .icon-error { 
+	background-position: -96px 0; 
+}
+.idlg-alert .alert-content { 
+	line-height: 1.8; 
+	padding: 5px 18px 10px 18px; 
+	text-align: left; 
+	white-space: normal; 
+	word-break: break-all;
+}
+
+/* 8个方向拖动改变大小的句柄 */
+.idlg-s, .idlg-n, .idlg-e, .idlg-w, .idlg-se, .idlg-sw, .idlg-ne, .idlg-nw { position: absolute; z-index:2; font-size:0 !important; line-height: 0 !important; background-color: #fff; opacity:0; filter:alpha(opacity=0); }
+.idlg-n, .idlg-s { left: 0; right: 0; width: 100%; height: 5px; cursor: n-resize; }
+.idlg-e, .idlg-w { top: 0; bottom: 0; width: 5px; height: 100%; _height: expression(this.parentNode.offsetHeight+'px'); cursor: e-resize; }
+.idlg-nw, .idlg-ne, .idlg-sw, .idlg-se { width: 10px; height: 10px; z-index: 4; }
+.idlg-n { top: -1px; }
+.idlg-s { bottom: -1px; }
+.idlg-e { right: -1px; }
+.idlg-w { left: -1px; }
+.idlg-nw { left: -1px; top: -1px;  cursor: nw-resize; }
+.idlg-ne { right: -1px; top: -1px; cursor: ne-resize; }
+.idlg-sw { left: -1px; bottom: -1px; cursor: sw-resize; }
+.idlg-se { right: -1px; bottom: -1px; cursor: se-resize; }

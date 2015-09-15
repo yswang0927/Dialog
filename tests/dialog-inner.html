@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+   
+    <title></title>
+	
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="../dialog.css" />
+	<script type="text/javascript">
+		function openDlg() {
+			Dialog.open({ id:"childDialog", "title": "子窗口", content:"<p>子窗口</p>" });
+		}
+		function refresh() {
+			Dialog.openerWindow().location.reload();
+			Dialog.ownerDialog().close();
+			Dialog.alert('添加成功');
+		}
+	</script>
+  </head>
+  
+  <body>
+	<div id="pageWrapper" style="padding:0 10px 50px 10px;">
+		<h3>我是通过url打开的内页：dialog-inner.html</h3>
+		<button onclick="getOpenerWindow();">获取来源页面中的内容</button>
+		<button onclick="closeIt();">关闭所在窗口</button>
+		<button onclick="openDlg();">打开子窗口</button>
+		<button onclick="refresh();">刷新源界面</button>
+		
+	</div>
+	<div>
+		<input type="text" value=""/>
+		<textarea rows="3" cols="50"></textarea>
+	</div>
+	<script type="text/javascript" src="../dialog.js"></script>
+	<script type="text/javascript">
+		function getOpenerWindow() {
+			var opWin = Dialog.openerWindow();
+			alert(opWin.document.getElementById('textDemo').value);
+		}
+		
+		function closeIt(){
+			Dialog.ownerDialog().close();
+		}
+	</script>
+  </body>
+</html>
